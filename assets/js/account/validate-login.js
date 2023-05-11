@@ -1,23 +1,23 @@
-const $ = document.querySelector.bind(document);
-const $$ = document.querySelectorAll.bind(document);
+const query = document.querySelector.bind(document);
+const queryAll = document.querySelectorAll.bind(document);
 
-const p_alerts = $$('p.alert');
-const inputs = $$('input');
+const p_alerts = queryAll('p.alert');
+const inputs = queryAll('input');
 inputs.forEach((item, index)=> {
     item.addEventListener('focus', ()=>{
         p_alerts[index].innerText = '';
     })
 });
 
-const form = $('form');
-const submit_btn = $('button[type="submit"]');
-const email = $('input[name="email"]');
-const pass = $('input[name="pass"]');
+const form = query('form');
+const submit_btn = query('button[type="submit"]');
+const email = query('input[name="email"]');
+const pass = query('input[name="pass"]');
 let hasError = false;
-const eye = $('.field-pass .eye');
+const eye = query('.field-pass .eye');
 
 function alertError(message, className) {
-    $('.alert--'+className).innerText = message;
+    query('.alert--'+className).innerText = message;
 }
 
 // function validateUserame(username) {
@@ -54,6 +54,19 @@ submit_btn.onclick = (e)=> {
     validateMail(email.value);
     validatePassword(pass.value);
     if(!hasError){
+        // $.ajax({
+        //     url: "controllers/account/xuly-login.php",
+        //     method: "POST",
+        //     data: JSON.stringify({
+        //          'email': email.value,
+        //          'password': pass.value
+        //      }),
+        //     contentType: "application/json"
+        // }).done(function(data) {
+        //   console.log(data);
+        // }).fail(function() {
+        //   console.log("có lỗi");
+        // });
         form.submit();
     }
     hasError = false;

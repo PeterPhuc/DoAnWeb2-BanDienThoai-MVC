@@ -1,10 +1,15 @@
-<?php
+<?php 
+    session_name("Customer");
     session_start();
-    include("config/connect.php");
-    ?>
+    if(isset($_SESSION['id_kh'])){
+        echo $_SESSION['id_kh'];
+    }else{
+        echo 'Đã hết phiên';
+    }
+?>
 <!DOCTYPE html>
 <html lang="en">
-    <head>
+<head>
     <base href="http://localhost:<?php echo $_SERVER['SERVER_PORT']; ?>/DoAnWeb2-BanDienThoai-MVC/" />
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">

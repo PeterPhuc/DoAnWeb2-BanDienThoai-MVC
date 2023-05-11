@@ -8,7 +8,7 @@
 
     <link rel="shortcut icon" href="assets/images/logo/king-mobile-cut.jpg" type="image/x-icon">
 
-    <?php include("../../../views/shared/import.php") ?>
+    <?php include("../../views/shared/import.php") ?>
 
     <!-- Đây là link css riêng cho từng trang -->
     <link rel="stylesheet" href="assets/css/account/login.css">
@@ -21,13 +21,21 @@
     <title>Admin Area</title>
 </head>
 <body>
+    <?php 
+        session_name('Admin');
+        session_start();
+        if(isset($_SESSION['adminlogin'])) {
+            $url = '../../views/admin/index.php';
+            header('location:' . $url); 
+        }
+    ?>
     <div class="login-wrapper">
         <div class="login-container">
             <div class="login-title">
                 <h1>ĐĂNG NHẬP QUẢN TRỊ</h1>
             </div>
             <div class="login-form"> 
-                <form action="controllers/account/xuly-login.php" method="post">
+                <form action="controllers/account/xuly-login-admin.php" method="post">
                     <div class="field field-mail">
                         <input type="text" name="email" id="" placeholder="Email">
                     </div>
@@ -38,7 +46,7 @@
                         <span class="eye">
                             <i class="fa-solid fa-eye"></i>
                         </span>
-                    </div>
+                    </div> 
                     <p class="alert alert--pass"></p>
 
                     <button type="submit" class="btn">Đăng nhập</button>
@@ -48,5 +56,8 @@
     </div>
 
     <script src="assets/js/account/validate-login.js"></script>
+    <!-- <script>
+        console.log(this.bien_a);
+    </script> -->
 </body>
 </html>
