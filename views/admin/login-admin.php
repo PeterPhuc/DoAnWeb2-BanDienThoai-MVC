@@ -22,7 +22,8 @@
 </head>
 <body>
     <?php 
-        session_name('Admin');
+        // Nếu admin đã đăng nhập rồi thì không cần đăng nhập nữa, và trở về trang chính của admin
+        session_name('admin');
         session_start();
         if(isset($_SESSION['adminlogin'])) {
             $url = '../../views/admin/index.php';
@@ -35,7 +36,7 @@
                 <h1>ĐĂNG NHẬP QUẢN TRỊ</h1>
             </div>
             <div class="login-form"> 
-                <form action="controllers/account/xuly-login-admin.php" method="post">
+                <form action="" method="post">
                     <div class="field field-mail">
                         <input type="text" name="email" id="" placeholder="Email">
                     </div>
@@ -55,9 +56,6 @@
         </div>
     </div>
 
-    <script src="assets/js/account/validate-login.js"></script>
-    <!-- <script>
-        console.log(this.bien_a);
-    </script> -->
+    <script src="assets/js/account/validate-login-admin.js"></script>
 </body>
 </html>

@@ -48,58 +48,60 @@
                             </div>
                         </td>
                     </tr>
-                    <tr>
-                        <td>100000001</td>
-                        <td class="img">
-                            <div class="wrapper">
-                                <img src="assets/images/uploads/admin-tin-le.jpg" alt="">
-                            </div>
-                        </td>
-                        <td class="wrap-text">Tin Nguyễn Nguyễn Nguyễn Azpilicuetagaraycosaroyarenberecolarrea Nguyễn
-                            Nguyễn Nguyễn Nguyễn</td>
-                        <td class="td-padding">Nguyễn Hoàng Giang Trường</td>
-                        <td>09375196001</td>
-                        <td class="wrap-text">
-                            trungtin.le1505@gmail.comtrungtin.le1505@gmail.comtrungtin.le1505@gmail.comtrungtin.le1505@gmail.com
-                        </td>
-                        <td class="wrap-text">TanHoaDong, HCM</td>
-                        <td class="ctrl" style="width: min-content">
-                            <div class="btn">
-                                <button type="button" class="btn btn-primary delete-item">
-                                    <i class="fas fa-pencil-alt"></i>
-                                </button>
-                                <button type="button" class="btn btn-danger delete-item">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>100000001</td>
-                        <td class="img">
-                            <div class="wrapper">
-                                <img src="assets/images/uploads/admin-tin-le.jpg" alt="">
-                            </div>
-                        </td>
-                        <td class="wrap-text">Tin Le</td>
-                        <td class="td-padding">Lê Hoàng Hiếu Nghĩa Đệ Nhất Thương Tâm Nhân</td>
-                        <td>0937519600</td>
-                        <td class="wrap-text">trungtin.le1505@gmail.com</td>
-                        <td class="wrap-text">TanHoaDong, HCM</td>
-                        <td class="ctrl" style="width: min-content">
-                            <div class="btn">
-                                <button type="button" class="btn btn-primary edit-item">
-                                    <i class="fas fa-pencil-alt"></i>
-                                </button>
-                                <button type="button" class="btn btn-danger delete-item">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
                 </tbody>
             </table>
         </div>
-
     </div>
 </div>
+<script>
+    const table = document.querySelector('.table-container');
+    const tbody = table.querySelector('tbody');
+
+    $.ajax({
+            url: 'controllers/user/xuly-user.php',
+            method: "POST",
+            data: {
+                'action': 'getAll'
+            }
+    }).done(function(data) {
+        if(data != 'fail'){
+            let dataParser = JSON.parse(data);
+            console.log(dataParser);
+            let stringHTML = dataParser.map(function(item, index){
+                return `<tr>
+                            <td>${item['id_kh']}</td>
+                            <td class="img">
+                                <div class="wrapper">
+                                    <img src="assets/images/uploads/customer-avatar/${item['avatar']}" alt="">
+                                </div>
+                            </td>
+                            <td class="wrap-text">${item['tentk']}</td>
+                            <td class="td-padding">${item['hoten']}</td>
+                            <td>${item['sdt']}</td>
+                            <td class="wrap-text">${item['email']}</td>
+                            <td class="wrap-text">${item['address']}</td>
+                            <td class="ctrl" style="width: min-content">
+                                <div class="btn">
+                                    <button type="button" class="btn btn-primary delete-item" onclick="sua(this)">
+                                        <i class="fas fa-pencil-alt"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-danger delete-item" onclick="xoa(this)">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>`;
+            });
+            tbody.innerHTML = stringHTML.join('');
+        }else{
+            console.log('Lỗi');
+        }
+    });
+
+    function xoa(btn) {
+        console.log(btn);
+    }
+    function sua(btn) {
+        console.log(btn);
+    }
+</script>

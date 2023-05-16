@@ -12,6 +12,7 @@
     }
     .content-main .manage-zone .table-manage {
         width: 100%;
+        padding-bottom: 200px;
     }
         .content-main .manage-zone .table-manage h4.total-record{
             padding: 0 0 17px 0;

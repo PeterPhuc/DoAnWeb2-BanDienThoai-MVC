@@ -7,9 +7,9 @@
         <h4 class="total-record">
             Bảng này có tổng <span>10<span> hóa đơn
         </h4>
-        <div class="add-record">
+        <!-- <div class="add-record">
             <button type="button" class="btn btn-success">Thêm</button>
-        </div>
+        </div> -->
         <div class="table-container">
             <table>
                 <thead>
@@ -35,9 +35,6 @@
                         <td>Đã giao</td>
                         <td class="ctrl">
                             <div class="btn" style="flex-wrap: wrap">
-                                <button type="button" class="btn btn-primary edit-item">
-                                    <i class="fas fa-pencil-alt"></i>
-                                </button>
                                 <button type="button" class="btn btn-danger delete-item">
                                     <i class="fas fa-trash"></i>
                                 </button>

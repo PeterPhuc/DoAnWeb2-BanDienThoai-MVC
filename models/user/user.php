@@ -3,14 +3,14 @@
     include($_SERVER['DOCUMENT_ROOT'] . '/DoAnWeb2-BanDienThoai-MVC/config/connect.php');
     if(!$conn->connect_error){    //kết nối thành công
         class User {
-            function themUser($tentk,$hoten,$sdt,$email,$password,$dob,$avatar,$address,$phanquyen) {
+            function themUser($tentk,$hoten,$sdt,$email,$password,$dob,$avatar,$address) {
                 global $conn;
-                $sql = "INSERT INTO khach_hang(tentk, hoten, sdt, email, password, dob, avatar, address, phanquyen) VALUES ('".$tentk."','".$hoten."','".$sdt."','".$email."','".$password."','".$dob."','".$avatar."','".$address."','".$phanquyen."')";
+                $sql = "INSERT INTO khach_hang(tentk, hoten, sdt, email, password, dob, avatar, address, phanquyen) VALUES ('".$tentk."','".$hoten."','".$sdt."','".$email."','".$password."','".$dob."','".$avatar."','".$address."',1)";
 
                 if (mysqli_query($conn, $sql)) {
-                    echo "success";
+                    return "success";
                 } else {
-                    echo "non-success";
+                    return "non-success";
                 }
             }
             function capnhatUser($id,$tentk,$hoten,$sdt,$email,$password,$dob,$avatar,$address) {
@@ -28,18 +28,18 @@
                 ";
 
                 if (mysqli_query($conn, $sql)) {
-                    echo "success";
+                    return "success";
                 } else {
-                    echo "non-success";
+                    return "non-success";
                 }
             }
             function xoaUser($id) {
                 global $conn;
                 $sql = "DELETE FROM khach_hang WHERE id_kh = '".$id."' ";
                 if (mysqli_query($conn, $sql)) {
-                    echo "success";
+                    return "success";
                 } else {
-                    echo "non-success";
+                    return "non-success";
                 }
             }
             function xuatUser() {
@@ -48,26 +48,32 @@
 
                 $result = $conn->query($sql);
                 if($result->num_rows > 0){
+                    $rows = array();
                     while($row = $result->fetch_assoc()) {
-                        print_r($row);
-                        echo '<br><br>';
+                        array_push($rows, $row);
                     }
+                    return $rows;
                 }else{
-                    echo 'No result';
+                    return 'No result';
                 }
             }
-            function searchMailPassUser($email, $pass) {
+
+            function searchMailPassUser($email, $pass, $phanquyen = 1) {
                 global $conn;
-                $sql = "SELECT * FROM khach_hang 
+                if($phanquyen == 1){
+                    $sql = "SELECT * FROM khach_hang 
                         WHERE email = '".$email."' AND password = '".$pass."'
-                ";
+                    ";
+                }else{
+                    $sql = "SELECT * FROM khach_hang 
+                        WHERE email = '".$email."' AND password = '".$pass."' AND phanquyen = '".$phanquyen."'
+                    ";
+                }
 
                 $result = $conn->query($sql);
                 if($result->num_rows === 1){
-                    // while($row = $result->fetch_assoc()) {
-                    //     print_r($row);
-                    // }
-                    return $result->fetch_assoc()['id_kh'];
+                    $row = $result->fetch_assoc();
+                    return $row['id_kh'].":".$row['tentk'].":".$row['avatar'];
                 }else{
                     return false;
                 }
@@ -80,11 +86,10 @@
 
                 $result = $conn->query($sql);
                 if($result->num_rows > 0){
-                    while($row = $result->fetch_assoc()) {
-                        print_r($row);
-                    }
+                    $row = $result->fetch_assoc();
+                    return $row;
                 }else{
-                    echo 'No result';
+                    return false;      //Không tìm thấy kết quả
                 }
             }
         }

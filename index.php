@@ -1,12 +1,3 @@
-<?php 
-    session_name("Customer");
-    session_start();
-    if(isset($_SESSION['id_kh'])){
-        echo $_SESSION['id_kh'];
-    }else{
-        echo 'Đã hết phiên';
-    }
-?>
 <!DOCTYPE html>
 <html lang="en">
 <head>

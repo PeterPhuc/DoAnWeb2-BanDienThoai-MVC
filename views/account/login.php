@@ -10,13 +10,22 @@
     <title>Đăng nhập</title>
 </head>
 <body>
+    <?php 
+        // Nếu khách hàng đã đăng nhập rồi thì không cần đăng nhập nữa, và trở về trang chủ
+        session_name('customer');
+        session_start();
+        if(isset($_SESSION['kh'])) {
+            $url = '../../index.php';
+            header('location:' . $url); 
+        }
+    ?>
     <div class="login-wrapper">
         <div class="login-container">
             <div class="login-title">
                 <h1>ĐĂNG NHẬP</h1>
             </div>
             <div class="login-form"> 
-                <form action="controllers/account/xuly-login.php" method="post">
+                <form action="" method="post">
                     <div class="field field-mail">
                         <input type="text" name="email" id="" placeholder="Email">
                     </div>

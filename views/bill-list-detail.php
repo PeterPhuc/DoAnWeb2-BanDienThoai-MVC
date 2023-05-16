@@ -1,8 +1,4 @@
 <base href="http://localhost:<?php echo $_SERVER['SERVER_PORT']; ?>/DoAnWeb2-BanDienThoai-MVC/" />
-<?php
-    session_start();
-    include("../config/connect.php");
-?>
 <!DOCTYPE html>
 <html lang="en">
 <head>

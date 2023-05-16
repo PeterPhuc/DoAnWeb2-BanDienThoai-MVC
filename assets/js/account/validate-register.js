@@ -203,14 +203,16 @@ submit_btn.onclick = (e)=> {
         nameBtnSubmit.classList.toggle('hidden');
         loaderSubmit.classList.toggle('hidden');
         const userProfile = {
-            'accname': accName.value,
-            'username': userName.value,
-            'phone': phone.value,
+            'action': 'add',
+
+            'tentk': accName.value,
+            'hoten': userName.value,
+            'sdt': phone.value,
             'email': email.value,
             'address': address.value,
             'password': pass.value,
             'dob': dob.value,
-            'avatarFile': fileTemp
+            'avatar': fileTemp
         };
         UploadToServer(userProfile);
     }
@@ -228,16 +230,16 @@ eye.onclick = function(){
 }
 
 function UploadToServer(userProfile) {
-    console.log(userProfile);
     $.ajax({
         type: 'POST',
-        url: 'controllers/account/xuly-register.php',
+        url: 'controllers/user/xuly-user.php',
         data: userProfile,
-        success: function(response) {
-            if(response === 'success'){
-                console.log('oke');
+        success: function(data) {
+            if(data === 'success'){
+                console.log('Thêm kh thành công');
+                window.location.replace('views/account/login.php');
             }else{
-                console.log('ôi sai gì đó');
+                console.log('lỗi thêm kh vào csdl');
             }
         },
         error: function(jqXHR, textStatus, errorThrown) {

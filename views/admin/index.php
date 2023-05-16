@@ -1,5 +1,5 @@
 <?php 
-    session_name('Admin');
+    session_name('admin');
     session_start();
     include($_SERVER['DOCUMENT_ROOT'] . "/DoAnWeb2-BanDienThoai-MVC/controllers/account/check-session-login-admin.php");
 ?>

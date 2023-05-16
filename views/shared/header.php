@@ -73,7 +73,7 @@
         </div>
 
         <!-- Phần nav bên phải gồm Đăng ký, Đăng nhập -->
-        <div class="nav-account logout-status" style="display: none">
+        <div class="nav-account logout-status">
             <div class="item">
                 <a href="views/account/register.php">Đăng ký</a>
             </div>
@@ -82,14 +82,14 @@
             </div>
         </div>
 
-        <div class="nav-account login-status">
+        <div class="nav-account login-status hidden">
             <div class="item avatar-acc">
-                <a href="views/account/profile-edit.php">
-                    <img class="avatar" src="assets/images/uploads/147829542_897902317629414_521350483213470701_n.jpg" alt="" srcset="">
+                <a href="">
+                    <img class="avatar" src="" alt="" srcset="">
                 </a>
             </div>
             <div class="item">
-                <a href="">Đăng Xuất</a>
+                <a href="controllers/account/xuly-logout.php?user=customer">Đăng Xuất</a>
             </div>
         </div>
     </div>
@@ -112,3 +112,5 @@
             </div>
         </div>
     </div>
+
+<script src="assets/js/session-cookie/check-session-login.js" async></script>

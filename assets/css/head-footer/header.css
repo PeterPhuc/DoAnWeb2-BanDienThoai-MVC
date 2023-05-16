@@ -228,6 +228,11 @@ body {
                             height: 100%;
                             object-fit: cover;
                         }
+                
+                    .nav-account.login-status.hidden,
+                    .nav-account.logout-status.hidden {
+                        display: none;
+                    }
 
 
         /* Phần slider */

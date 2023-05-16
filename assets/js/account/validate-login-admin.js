@@ -20,11 +20,6 @@ function alertError(message, className) {
     query('.alert--'+className).innerText = message;
 }
 
-// function validateUserame(username) {
-//     const rgxUsername = /^[a-zA-Z]+([ ]{1}[a-zA-Z]+)*$/;
-//     return rgxUsername.test(username);
-// }
-
 function validateMail(mail) {
     const rgxMail = /^([a-zA-Z0-9-._])+[@]+[a-z]+[.]+[a-z]+([.]+[a-z]+)*$/;
     if(!mail){
@@ -55,7 +50,7 @@ submit_btn.onclick = (e)=> {
     validatePassword(pass.value);
     if(!hasError){
         $.ajax({
-            url: "controllers/account/xuly-login.php",
+            url: "controllers/account/xuly-login-admin.php",
             method: "POST",
             data: {
                  'email': email.value,
@@ -63,14 +58,14 @@ submit_btn.onclick = (e)=> {
             }
         }).done(function(data) {
             if(data === 'success'){
-                window.location.replace('index.php');
+                window.location.replace('views/admin/index.php');
+                // console.log(data);
             }else{
                 alert(data);
             }
         }).fail(function() {
-            // console.log("có lỗi");
+           
         });
-        // form.submit();
     }
     hasError = false;
 }
