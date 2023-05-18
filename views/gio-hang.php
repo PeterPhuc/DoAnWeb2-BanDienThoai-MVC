@@ -1,8 +1,4 @@
 <base href="http://localhost:<?php echo $_SERVER['SERVER_PORT']; ?>/DoAnWeb2-BanDienThoai-MVC/" />
-<?php
-    session_start();
-    include("../config/connect.php");
-?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -35,7 +31,7 @@
                 </div>
                 <div class="cart-zone cart-exist">
                     <div class="action-zone">
-                        <button class="btn-delAll">Xóa tất cả</button>
+                        <button class="btn-delAll" onclick="xoaToanBoSP(this)">Xóa tất cả</button>
                     </div>
                     <table class="table">
                         <thead>
@@ -48,75 +44,6 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td class="img">
-                                    <div class="wrapper">
-                                        <img src="assets/images/products/iphone/iphone-11-trang.jpg" alt="">
-                                    </div>
-                                </td>
-                                <td>iphone 14 pro max</td>
-                                <td>
-                                    <div class="edit-soluong">
-                                        <button>-</button>
-                                        <input type="text" name="" id="">
-                                        <button>+</button>
-                                    </div>
-                                </td>
-                                <td>280.222.000đ</td>
-                                <td class="ctrl" style="width: min-content">
-                                    <div class="btn">
-                                        <button type="button" class="btn btn-danger delete-item">
-                                            Xóa
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="img">
-                                    <div class="wrapper">
-                                        <img src="assets/images/products/iphone/iphone-11-trang.jpg" alt="">
-                                    </div>
-                                </td>
-                                <td>iphone 14 pro max</td>
-                                <td>
-                                    <div class="edit-soluong">
-                                        <button>-</button>
-                                        <input type="text" name="" id="">
-                                        <button>+</button>
-                                    </div>
-                                </td>
-                                <td>280.222.000đ</td>
-                                <td class="ctrl" style="width: min-content">
-                                    <div class="btn">
-                                        <button type="button" class="btn btn-danger delete-item">
-                                            Xóa
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="img">
-                                    <div class="wrapper">
-                                        <img src="assets/images/products/iphone/iphone-11-trang.jpg" alt="">
-                                    </div>
-                                </td>
-                                <td>iphone 14 pro max</td>
-                                <td>
-                                    <div class="edit-soluong">
-                                        <button>-</button>
-                                        <input type="text" name="" id="">
-                                        <button>+</button>
-                                    </div>
-                                </td>
-                                <td>280.222.000đ</td>
-                                <td class="ctrl" style="width: min-content">
-                                    <div class="btn">
-                                        <button type="button" class="btn btn-danger delete-item">
-                                            Xóa
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
                         </tbody>
                     </table>
                     
@@ -126,12 +53,163 @@
                         </button>
                     </div>
                 </div>
-                <script src="assets/js/cart/cart.js" defer></script>
+                
             </div>
         </div>
         
         <!-- Phần footer -->
         <?php include("../views/shared/footer.php")?>
     </div>
+    <script>
+        $.ajax({
+            url: "controllers/account/check-session-login-customer.php",
+            method: "GET"
+        }).done(function(data) {
+            if(data === 'timeout'){
+                alert('Bạn cần đăng nhập mới xem được giỏ hàng');
+                window.location.replace = 'index.php';
+            }else{
+                const id_kh = data.split(':')[0];
+                const cart_zone_not_exist = document.querySelector('.cart-zone.cart-not-exist');
+                const cart_zone_exist = document.querySelector('.cart-zone.cart-exist');
+                const btn_delAll = document.querySelector('.cart-exist .action-zone button.btn-delAll');
+                btn_delAll.setAttribute('data-idKH', id_kh);
+
+                $.ajax({
+                    url: "controllers/giohang/xuly-giohang.php",
+                    method: "GET",
+                    data: {
+                        'action': 'showCart',
+                        'id_kh': id_kh
+                    }
+                }).done(function(dataResponse) {
+                    const dataParser = JSON.parse(dataResponse);
+                    if(dataParser === 'No result'){
+                        cart_zone_not_exist.style.display = 'block';
+                        cart_zone_exist.style.display = 'none';
+                    }else{
+                        cart_zone_not_exist.style.display = 'none';
+                        cart_zone_exist.style.display = 'block';
+                        console.log(dataParser);
+
+                        render(dataParser);
+                    }
+                });
+            }
+        });
+
+        
+        function xoaMotSP(btn) {
+            const id_sp = btn.getAttribute('data-idSP');
+            const id_kh = btn.getAttribute('data-idKH');
+
+            var result = confirm("Bạn muốn xóa sản phẩm này?");
+            if (result === true) {
+                $.ajax({
+                    url: "controllers/giohang/xuly-giohang.php",
+                    method: "GET",
+                    data: {
+                        'action': 'xoaCart',
+                        'id_sp': id_sp,
+                        'id_kh': id_kh
+                    }
+                }).done(function(dataResponse) {
+                    if(dataResponse === 'success'){
+                        alert('Xóa thành công!');
+                        btn.parentElement.parentElement.parentElement.remove();
+                    }else{
+                        alert('Xóa không thành công. Vui lòng thử lại!');
+                    }
+                });
+            }
+        }
+
+        function xoaToanBoSP(btn) {
+            const id_kh = btn.getAttribute('data-idKH');
+            var result = confirm("Bạn muốn xóa toàn bộ giỏ hàng?");
+            if (result === true) {
+                $.ajax({
+                    url: "controllers/giohang/xuly-giohang.php",
+                    method: "GET",
+                    data: {
+                        'action': 'xoaAllCart',
+                        'id_kh': id_kh
+                    }
+                }).done(function(dataResponse) {
+                    if(dataResponse === 'success'){
+                        alert('Xóa thành công!');
+                        document.querySelector('.cart-exist .table tbody').innerHTML = '';
+                    }else{
+                        alert('Xóa không thành công. Vui lòng thử lại!');
+                    }
+                });
+            }
+        }
+
+        function capNhatSoluong(input) {
+            let current_value = +input.value;
+            let total_price_td = input.parentElement.parentElement.nextElementSibling;
+            let current_price = +total_price_td.getAttribute('data-price');
+            
+            let total_price = current_value * current_price;
+            let format_toString = total_price.toLocaleString().replace(/\,/g, '.');
+            
+            total_price_td.innerHTML = format_toString + 'đ';
+
+            //Tự động cập nhật số lượng giỏ hàng lên server sau khi user click tăng giảm số lượng khoảng 3s
+            var clearTimeout = '';
+            setTimeout(() => {
+                
+            }, 3000);
+        }
+
+        function tang(btn) {
+            const input = btn.parentElement.querySelector('input#soluong');
+            let current_value = +input.value;
+            input.value = ++current_value;
+
+            capNhatSoluong(input);
+        }
+        function giam(btn) {
+            const input = btn.parentElement.querySelector('input#soluong');
+            let current_value = +input.value;
+            if(current_value > 0){
+                input.value = --current_value;
+                capNhatSoluong(input);
+            }
+        }
+
+        function render(dataParser){
+            let strData = dataParser.map(function(item, index){
+                return `
+                    <tr>
+                        <td class="img">
+                            <div class="wrapper">
+                                <img src="assets/images/products/${item['anh_sp']}" alt="">
+                            </div>
+                        </td>
+                        <td>${item['tensp']}</td>
+                        <td>
+                            <div class="edit-soluong">
+                                <button class="giam" onclick="giam(this)">-</button>
+                                <input type="number" name="" id="soluong" value=${item['soluong']} onchange="capNhatSoluong(this)">
+                                <button class="tang" onclick="tang(this)">+</button>
+                            </div>
+                        </td>
+                        <td data-price=${item['tongtien'].replace(/\./g, '')}>${item['tongtien']}đ</td>
+                        <td class="ctrl" style="width: min-content">
+                            <div class="btn">
+                                <button type="button" class="btn btn-danger delete-item" data-idSP=${item['id_sp']} data-idKH=${item['id_kh']} onclick="xoaMotSP(this)">
+                                    Xóa
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+
+            document.querySelector('.cart-exist .table tbody').innerHTML = strData;
+        }
+    </script>
 </body>
 </html>

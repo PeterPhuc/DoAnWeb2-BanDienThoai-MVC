@@ -27,83 +27,15 @@
             <div class="content-item content-main">
                 <!-- Tiêu đề lớn -->
                 <div class="main-title">
-                    <h1>ĐIỆN THOẠI NỔI BẬT</h1>
+                    <h1>SẢN PHẨM NỔI BẬT</h1>
                 </div>
                 <!-- Khối container -->
                 <div class="outstanding-products phone">
                     <!-- Các item sản phẩm -->
-                    <div class="item">
-                        <!-- Ảnh sp -->
-                        <div class="image">
-                            <img src="assets/images/products/iphone/iphone-12-den-new-2.jpg" alt="" srcset="">
-                        </div>
-                        <!-- Tên sp -->
-                        <div class="title">
-                            <h2>
-                                iPhone 14 Pro Max
-                            </h2>
-                        </div>
-                        <!-- Giá khuyến mãi -->
-                        <div class="price-sale">
-                            <p>
-                                20.490.000₫
-                            </p>
-                        </div>
-                        <!-- Giá gốc -->
-                        <div class="price-origin">
-                            <p>
-                                <!-- giá gốc có gạch bỏ (line thought) -->
-                                <span>
-                                    27.490.000₫
-                                </span>
-                                <!-- % giảm giá -->
-                                <span>
-                                    -6%
-                                </span>
-                            </p>
-                        </div>
-                         <!-- Nút xem chi tiết sản phẩm  -->
-                        <div class="detail">
-                            <button type="button" class="btn btn-primary">
-                                <a class="a" href="">Xem chi tiết</a>
-                            </button>
-                        </div>
-                    </div>
-
-                    <div class="item">
-                        <div class="image">
-                            <img src="assets/images/products/iphone/iphone-13-pro-graphite.jpg" alt="" srcset="">
-                        </div>
-                        <div class="title">
-                            <h2>
-                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque facere repellat aliquam sint fugiat pariatur? Laborum nam, nemo, quae vitae, odit blanditiis accusantium odio placeat quidem rem nisi hic atque?
-                            </h2>
-                        </div>
-                        <div class="price-sale">
-                            <p>
-                                20.490.000₫
-                            </p>
-                        </div>
-                        <div class="price-origin">
-                            <p>
-                                <span>
-                                    27.490.000₫
-                                </span>
-                                <span>
-                                    -6%
-                                </span>
-                            </p>
-                        </div>
-                        <div class="detail">
-                            <button type="button" class="btn btn-primary">
-                                <a class="a" href="">Xem chi tiết</a>
-                            </button>
-                        </div>
-                    </div>
                 </div>
 
                 <!-- Tiêu đề lớn -->
-                <div class="main-title second">
+                <!-- <div class="main-title second">
                     <h1>PHỤ KIỆN NỔI BẬT</h1>
                 </div>
                 <div class="outstanding-products phukien">
@@ -137,12 +69,79 @@
                             </button>
                         </div>
                     </div>
-                </div>
+                </div> -->
             </div>
         </div>
         
         <!-- Phần footer -->
         <?php include("views/shared/footer.php")?>
     </div>
+
+    <script>
+        $.ajax({
+            url: 'controllers/product-category/xuly-product.php',
+            method: "GET",
+            data: {
+                'action': 'sp-noi-bat',
+            }
+        }).done(function(data) {
+            if(data != 'No result'){
+                const dataParser = JSON.parse(data);
+                render(dataParser);
+            }
+        }).fail(function(error) {
+            console.error(error);
+        });
+
+        function render(dataParser){
+                const outstanding_products = document.querySelector('div.outstanding-products');
+
+                let mapData = dataParser.map(function(item, index){
+                    const giaKhuyenMai = +item['gia_khuyenmai'].replace(/\./g, '');
+                    const giaGoc = +item['gia_sp'].replace(/\./g, '');
+                    let percent_sale_calc = '';
+                    if (giaGoc !== 0) {
+                        percent_sale_calc = 100 - ((giaKhuyenMai / giaGoc) * 100);
+                        percent_sale_calc = percent_sale_calc.toFixed(2);
+                    } else {
+                        percent_sale_calc = 100; 
+                    }
+                   
+                    return `
+                        <div class="item">
+                            <div class="image">
+                                <img src="assets/images/products/${item['anh_sp']}" alt="" srcset="">
+                            </div>
+                            <div class="title">
+                                <h2>
+                                    ${item['tensp']}
+                                </h2>
+                            </div>
+                            <div class="price-sale">
+                                <p>
+                                    ${item['gia_khuyenmai']}₫
+                                </p>
+                            </div>
+                            <div class="price-origin">
+                                <p>
+                                    <span>
+                                        ${item['gia_sp']}₫
+                                    </span>
+                                    <span class="percent-sale">
+                                        ${percent_sale_calc}%
+                                    </span>
+                                </p>
+                            </div>
+                            <div class="detail">
+                                <button type="button" class="btn btn-primary">
+                                    <a class="a" href="views/product-detail.php?idsp=${item['id_sp']}">Xem chi tiết</a>
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                }).join(''); 
+                outstanding_products.innerHTML = mapData;
+            }
+    </script>
 </body>
 </html>

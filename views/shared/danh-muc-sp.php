@@ -13,19 +13,19 @@
         <div class="list-phone"> 
             <ul>
 				<li>
-                    <a href="">
+                    <a href="views/product-list.php?iddm=1001&page=1">
                         <i class="fa-solid fa-caret-right"></i>
                         <span>IPHONE</span>
                     </a>
                 </li>
 				<li>
-                    <a href="">
+                    <a href="views/product-list.php?iddm=1002&page=1">
                         <i class="fa-solid fa-caret-right"></i>
                         <span>SAMSUNG</span>
                     </a>
                 </li>
 				<li>
-                    <a href="">
+                    <a href="views/product-list.php?iddm=1003&page=1">
                         <i class="fa-solid fa-caret-right"></i>
                         <span>XIAOMI</span>
                     </a>
@@ -46,7 +46,7 @@
         <div class="list-phukien">
             <ul>
 				<li>
-                    <a href="">
+                    <a href="views/product-list.php?iddm=1004&page=1">
                         <i class="fa-solid fa-caret-right"></i>
                         <span>DÂY SẠC</span>
                     </a>

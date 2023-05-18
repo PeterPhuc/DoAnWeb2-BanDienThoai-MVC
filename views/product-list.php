@@ -1,7 +1,3 @@
-<?php
-    session_start();
-    include("../config/connect.php");
-    ?>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -20,7 +16,9 @@
 <body>
     <div class="wrapper">
         <!-- Phần header -->
-        <?php include("../views/shared/header.php")?>
+        <?php 
+        include("../views/shared/header.php")
+        ?>
 
         <!-- Content wrapper -->
         <div class="content-wrapper">
@@ -31,85 +29,121 @@
             <div class="content-item content-main">
                 <!-- Tiêu đề lớn -->
                 <div class="main-title">
-                    <h1>SAMSUNG</h1>
+                    <h1 style="text-transform: uppercase">SAMSUNG</h1>
                 </div>
                 <!-- Khối container -->
                 <div class="outstanding-products phone">
                     <!-- Các item sản phẩm -->
-                    <div class="item">
-                        <!-- Ảnh sp -->
-                        <div class="image">
-                            <img src="assets/images/products/iphone/iphone-12-den-new-2.jpg" alt="" srcset="">
-                        </div>
-                        <!-- Tên sp -->
-                        <div class="title">
-                            <h2>
-                                iPhone 14 Pro Max
-                            </h2>
-                        </div>
-                        <!-- Giá khuyến mãi -->
-                        <div class="price-sale">
-                            <p>
-                                20.490.000₫
-                            </p>
-                        </div>
-                        <!-- Giá gốc -->
-                        <div class="price-origin">
-                            <p>
-                                <!-- giá gốc có gạch bỏ (line thought) -->
-                                <span>
-                                    27.490.000₫
-                                </span>
-                                <!-- % giảm giá -->
-                                <span>
-                                    -6%
-                                </span>
-                            </p>
-                        </div>
-                         <!-- Nút xem chi tiết sản phẩm  -->
-                        <div class="detail">
-                            <button type="button" class="btn btn-primary">
-                                <a class="a" href="">Xem chi tiết</a>
-                            </button>
-                        </div>
-                    </div>
-
-                    <div class="item">
-                        <div class="image">
-                            <img src="assets/images/products/iphone/iphone-13-pro-graphite.jpg" alt="" srcset="">
-                        </div>
-                        <div class="title">
-                            <h2>
-                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque facere repellat aliquam sint fugiat pariatur? Laborum nam, nemo, quae vitae, odit blanditiis accusantium odio placeat quidem rem nisi hic atque?
-                            </h2>
-                        </div>
-                        <div class="price-sale">
-                            <p>
-                                20.490.000₫
-                            </p>
-                        </div>
-                        <div class="price-origin">
-                            <p>
-                                <span>
-                                    27.490.000₫
-                                </span>
-                                <span>
-                                    -6%
-                                </span>
-                            </p>
-                        </div>
-                        <div class="detail">
-                            <button type="button" class="btn btn-primary">
-                                <a class="a" href="">Xem chi tiết</a>
-                            </button>
-                        </div>
-                    </div>
+                    
                 </div>
+
+                <p id="pagination-here" style="text-align: center;display: flex; justify-content: center; padding-bottom: 30px; font-size: 1.8rem"></p>
             </div>
         </div>
         
         <!-- Phần footer -->
         <?php include("../views/shared/footer.php")?>
+ 
+        <script src="//netdna.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+        <script src="https://cdn.rawgit.com/botmonster/jquery-bootpag/master/lib/jquery.bootpag.min.js"></script>
+        <script>
+            const url = new URL(window.location.href);
+            const searchParams = url.searchParams;
+            const iddm = searchParams.get('iddm');
+            const page = searchParams.get('page');
+
+            var request1 = $.ajax({
+                url: 'controllers/product-category/xuly-product.php',
+                method: "GET",
+                data: {
+                    'action': 'getSp-DM',
+                    'iddm': iddm,
+                    'page': page
+                }
+            });
+            var request2 = $.ajax({
+                url: 'controllers/product-category/xuly-category.php',
+                method: "GET",
+                data: {
+                    'action': 'getDM',
+                    'iddm': iddm
+                }
+            });
+
+            $.when(request1, request2)
+                .done(function(response1, response2) {
+                    if(response1[0] != 'No result' && response2[0] != 'No result'){
+                        const array_dataParserProduct = JSON.parse(response1[0]);
+                        const dataParserCategory = JSON.parse(response2[0]);
+                        render(array_dataParserProduct[0], dataParserCategory);
+                        
+                        const total_page = array_dataParserProduct[1];
+                        $('#pagination-here').bootpag({
+                            total: total_page,
+                            page: page,
+                            maxVisible: 4,
+                            leaps: false
+                        }).on("page", function(event, num){
+                            window.location.href = `views/product-list.php?iddm=${array_dataParserProduct[0][0]["id_dmsp"]}&page=${num}`;
+                        });
+                    }
+                })
+                .fail(function(error) {
+                    console.error(error);
+                });
+
+            function render(dataParserProduct, dataParserCategory){
+                const h1_main_title = document.querySelector('div.main-title h1');
+                const outstanding_products = document.querySelector('div.outstanding-products');
+                h1_main_title.innerText = dataParserCategory[0]['ten_dm'];
+
+                let mapData = dataParserProduct.map(function(item, index){
+                    const giaKhuyenMai = +item['gia_khuyenmai'].replace(/\./g, '');
+                    const giaGoc = +item['gia_sp'].replace(/\./g, '');
+                    let percent_sale_calc = '';
+                    if (giaGoc !== 0) {
+                        percent_sale_calc = 100 - ((giaKhuyenMai / giaGoc) * 100);
+                        percent_sale_calc = percent_sale_calc.toFixed(2);
+                    } else {
+                        percent_sale_calc = 100; 
+                    }
+                   
+                    return `
+                        <div class="item">
+                            <div class="image">
+                                <img src="assets/images/products/${item['anh_sp']}" alt="" srcset="">
+                            </div>
+                            <div class="title">
+                                <h2>
+                                    ${item['tensp']}
+                                </h2>
+                            </div>
+                            <div class="price-sale">
+                                <p>
+                                    ${item['gia_khuyenmai']}₫
+                                </p>
+                            </div>
+                            <div class="price-origin">
+                                <p>
+                                    <span>
+                                        ${item['gia_sp']}₫
+                                    </span>
+                                    <span class="percent-sale">
+                                        ${percent_sale_calc}%
+                                    </span>
+                                </p>
+                            </div>
+                            <div class="detail">
+                                <button type="button" class="btn btn-primary">
+                                    <a class="a" href="views/product-detail.php?idsp=${item['id_sp']}">Xem chi tiết</a>
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                }).join(''); 
+                outstanding_products.innerHTML = mapData;
+            }
+        </script>
     </div>
 </body>
 </html>

@@ -76,8 +76,8 @@
                         <input type="file" name="avt" id="avt" placeholder="Ảnh tài khoản" accept=".png,.jpg,.jpeg" style="display: none">
 
                         <div class="wrap-avatar">
-                            <a href="assets/images/uploads/default-acc.png" target="_blank">
-                                <img src="assets/images/uploads/default-acc.png" alt="" class="account-avt">
+                            <a href="assets/images/uploads/customer-avatar/default-acc.png" target="_blank">
+                                <img src="assets/images/uploads/customer-avatar/default-acc.png" alt="" class="account-avt">
                             </a>
                         </div>
                     </div>
@@ -88,9 +88,9 @@
                         <div class="name-btn">Sign Up</div>
 
                         <!-- Khi nhấn submit form thì hiển thị loading xoay tròn, sau khi nhận được kết quả trả về từ controllers thì có thể ẩn loading đi -->
-                        <div class="loader hidden">        
+                        <!-- <div class="loader hidden">        
                             <span class="ring"></span>
-                        </div>
+                        </div> -->
                     </button>
                 </form>
             </div>

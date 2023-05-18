@@ -13,26 +13,26 @@
                     return "non-success";
                 }
             }
-            function capnhatUser($id,$tentk,$hoten,$sdt,$email,$password,$dob,$avatar,$address) {
-                global $conn;
-                $sql = "UPDATE khach_hang SET 
-                    tentk = '".$tentk."',
-                    hoten = '".$hoten."',
-                    sdt = '".$sdt."',
-                    email = '".$email."',
-                    password = '".$password."',
-                    dob = '".$dob."',
-                    avatar = '".$avatar."',
-                    address = '".$address."'
-                    WHERE id_kh = '".$id."'
-                ";
+            // function capnhatUser($id,$tentk,$hoten,$sdt,$email,$password,$dob,$avatar,$address) {
+            //     global $conn;
+            //     $sql = "UPDATE khach_hang SET 
+            //         tentk = '".$tentk."',
+            //         hoten = '".$hoten."',
+            //         sdt = '".$sdt."',
+            //         email = '".$email."',
+            //         password = '".$password."',
+            //         dob = '".$dob."',
+            //         avatar = '".$avatar."',
+            //         address = '".$address."'
+            //         WHERE id_kh = '".$id."'
+            //     ";
 
-                if (mysqli_query($conn, $sql)) {
-                    return "success";
-                } else {
-                    return "non-success";
-                }
-            }
+            //     if (mysqli_query($conn, $sql)) {
+            //         return "success";
+            //     } else {
+            //         return "non-success";
+            //     }
+            // }
             function xoaUser($id) {
                 global $conn;
                 $sql = "DELETE FROM khach_hang WHERE id_kh = '".$id."' ";

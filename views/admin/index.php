@@ -16,6 +16,8 @@
     <link rel="stylesheet" href="assets/css/admin/sidebar-logo.css">
     <link rel="stylesheet" href="assets/css/admin/account-view-style.css">
     <link rel="stylesheet" href="assets/css/admin/manage-zone-style.css">
+
+    <link rel="stylesheet" href="assets/css/account/register.css">
     <title>Trang Quản Trị</title>
 </head>
 <body>
@@ -49,14 +51,14 @@
             ?>
         </div>
 
-        <script>
+        <!-- <script>
             let btns = document.querySelectorAll('button');
             btns.forEach(element => {
                 element.onclick = ()=>{
                     console.log(element.innerHTML);
                 }
             });
-        </script>
+        </script> -->
     </div>
 </body>
 </html>

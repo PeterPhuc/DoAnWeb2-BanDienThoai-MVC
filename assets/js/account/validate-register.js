@@ -135,7 +135,7 @@ function validateDOB(DOB_value) {
     }
 }
 
-let fileTemp = '';     //Khai báo biến fileTemp dùng để lưu đường dẫn ảnh
+let fileTemp = 'default-acc.png';     //Khai báo biến fileTemp dùng để lưu đường dẫn ảnh
 // Kiểm tra ảnh đại diện
 function AvatarPhoto() {
     label_upload.onclick = function() {
@@ -164,32 +164,17 @@ function AvatarPhoto() {
 
     label_remove.onclick = function(){
         URL.revokeObjectURL(fileTemp);  //Giải phóng tài nguyên đường dẫn tạm thời
-        fileTemp = 'assets/images/uploads/default-acc.png';
-        query('.wrap-avatar a').setAttribute('href', fileTemp);
-        query('.wrap-avatar a img.account-avt').src = fileTemp;
+        fileTemp = 'default-acc.png';
+        query('.wrap-avatar a').setAttribute('href', 'assets/images/uploads/customer-avatar/default-acc.png');
+        query('.wrap-avatar a img.account-avt').src = 'assets/images/uploads/customer-avatar/default-acc.png';
         label_upload.classList.toggle('hidden');
         this.classList.toggle('hidden');
     }
 }
 AvatarPhoto();
 
-// let isValidType = false;
-// let hasChange = false; 
-// ava.addEventListener('change', function(e) {
-//     hasChange = true;
-//     const typeOfFile = this.files[0].type;
-//     switch (typeOfFile) {
-//         case 'image/png':
-//         case 'image/jpg':
-//         case 'image/jpeg':
-//             isValidType = true;
-//             break;
-//     }
-// });
-
-submit_btn.onclick = (e)=> {
+submit_btn.onclick = function(e) {
     e.preventDefault();
-
     validateAccName(accName.value);
     validateUserName(userName.value);
     validatePhoneNumber(phone.value);
@@ -200,21 +185,48 @@ submit_btn.onclick = (e)=> {
 
     if(!hasError){
         submit_btn.disabled = true;
-        nameBtnSubmit.classList.toggle('hidden');
-        loaderSubmit.classList.toggle('hidden');
-        const userProfile = {
-            'action': 'add',
+        // nameBtnSubmit.classList.toggle('hidden');
+        // loaderSubmit.classList.toggle('hidden');
+        const formData = new FormData();
+        formData.append('action', 'add');
+        formData.append('tentk', accName.value);
+        formData.append('hoten', userName.value);
+        formData.append('sdt', phone.value);
+        formData.append('email', email.value);
+        formData.append('address', address.value);
+        formData.append('password', pass.value);
+        formData.append('dob', dob.value);
+        if(typeof fileTemp === "string"){
+            formData.append('typeAvatarProperty', 'string');
+        }else{
+            formData.append('typeAvatarProperty', 'object');
+        }
+        formData.append('avatar', fileTemp);
+        console.log(typeof fileTemp);
 
-            'tentk': accName.value,
-            'hoten': userName.value,
-            'sdt': phone.value,
-            'email': email.value,
-            'address': address.value,
-            'password': pass.value,
-            'dob': dob.value,
-            'avatar': fileTemp
-        };
-        UploadToServer(userProfile);
+        // UploadToServer(userProfile);
+        $.ajax({
+            type: 'POST',
+            url: 'controllers/user/xuly-user.php',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(data) {
+                if(data === 'success'){
+                    console.log('Thêm kh thành công');
+                    window.location.replace('views/account/login.php');
+                }else if(data === "Can't save avatar"){
+                    console.log('lỗi lưu ảnh vào thư mục uploads/customer-avatar');
+                }else{
+                    console.log('Lỗi khi thêm kh vào csdl');
+                }
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                console.log(textStatus, errorThrown);
+            }
+        }).always(function() {
+            submit_btn.disabled = false;
+        });
     }
     hasError = false;                //reset lại biến hasError sau mỗi lần kiểm tra để check valid cho lần tiếp theo
 }
@@ -229,25 +241,24 @@ eye.onclick = function(){
     flag = !flag;
 }
 
-function UploadToServer(userProfile) {
-    $.ajax({
-        type: 'POST',
-        url: 'controllers/user/xuly-user.php',
-        data: userProfile,
-        success: function(data) {
-            if(data === 'success'){
-                console.log('Thêm kh thành công');
-                window.location.replace('views/account/login.php');
-            }else{
-                console.log('lỗi thêm kh vào csdl');
-            }
-        },
-        error: function(jqXHR, textStatus, errorThrown) {
-            console.log(textStatus, errorThrown);
-        }
-    }).always(function() {
-        submit_btn.disabled = false;
-        nameBtnSubmit.classList.toggle('hidden');
-        loaderSubmit.classList.toggle('hidden');
-    });
-}
+// function UploadToServer(userProfile) {
+//     $.ajax({
+//         type: 'POST',
+//         url: 'controllers/user/xuly-user.php',
+//         data: userProfile,
+//         success: function(data) {
+//             // if(data === 'success'){
+//             //     console.log('Thêm kh thành công');
+//             //     window.location.replace('views/account/login.php');
+//             // }else{
+//             //     console.log('lỗi thêm kh vào csdl');
+//             // }
+//             console.log(data);
+//         },
+//         error: function(jqXHR, textStatus, errorThrown) {
+//             console.log(textStatus, errorThrown);
+//         }
+//     }).always(function() {
+//         submit_btn.disabled = false;
+//     });
+// }

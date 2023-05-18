@@ -36,7 +36,7 @@
         </div>
         <!-- Phần giỏ hàng -->
         <div class="header-content__cart">
-            <a href="views/gio-hang.php">
+            <a href="javascript:void(0);" onclick="checkCartLogin(this)">
                 <span class="cart-icon">
                     <i class="fa-solid fa-cart-shopping"></i>
                 </span>
@@ -45,7 +45,7 @@
         </div>
         <!-- Phần hóa đơn -->
         <div class="header-content__bill">
-            <a href="views/bill-list.php">
+            <a href="javascript:void(0);" onclick="checkBillLogin(this)">
                 <span class="bill-icon">
                     <i class="fa-solid fa-receipt"></i>
                 </span>
@@ -114,3 +114,32 @@
     </div>
 
 <script src="assets/js/session-cookie/check-session-login.js" async></script>
+<script src="assets/js/search/search.js"></script>
+<script>
+    function checkCartLogin(btn){
+        $.ajax({
+        url: "controllers/account/check-session-login-customer.php",
+        method: "GET"
+        }).done(function(data) {
+            if(data === 'timeout'){
+                alert('Bạn cần đăng nhập mới được xem giỏ hàng');
+            }
+            else{
+                window.location.href = 'views/gio-hang.php';
+            }
+        });
+    }
+    function checkBillLogin(btn){
+        $.ajax({
+        url: "controllers/account/check-session-login-customer.php",
+        method: "GET"
+        }).done(function(data) {
+            if(data === 'timeout'){
+                alert('Bạn cần đăng nhập mới được xem hóa đơn');
+            }
+            else{
+                window.location.href = 'views/bill-list.php';
+            }
+        });
+    }
+</script>
