@@ -138,20 +138,22 @@
                 }
             }
 
-            function checkSoluongSP($id_sp, $soluonggiohang) {      //Kiểm tra số lượng SP cho vào giỏ
+            function checkSoluongSP($id_sp, $soluongmua) {      //Kiểm tra số lượng SP cho vào giỏ
                 global $conn;
                 $sql = "SELECT soluong FROM sanpham
                         WHERE id_sp = '".$id_sp."'
                 ";
+               
                 $result_soluong = $conn->query($sql);
                 if($result_soluong->num_rows > 0){
-                    $soluong_conlai = $result_soluong->fetch_assoc();
+                    $soluong_conlai = intval($result_soluong->fetch_assoc()['soluong']);
                     if($soluong_conlai == 0){
                         return 'Sản phẩm tạm hết hàng';
                     }
-                    if($soluonggiohang > $soluong_conlai){
+                    else if($soluongmua > $soluong_conlai){          
                         return 'Vượt quá số lượng sản phẩm hiện tại';
-                    }else{
+                    }
+                    else{
                         return 'success';
                     }
                 }else{
@@ -160,32 +162,27 @@
             }
 
             function capnhatSoluongSP($id_sp, $soluongmua) {      //Cập nhật số lượng SP Khi đã thanh toán
-                $soluongmua = intval($soluongmua);
                 global $conn;
                 $sql = "SELECT soluong FROM sanpham
                         WHERE id_sp = '".$id_sp."'
                 ";
                 $result_soluong = $conn->query($sql);
-
                 if($result_soluong->num_rows > 0){
-                    $soluong_conlai = $result_soluong->fetch_assoc();
-                    $soluong_conlai = intval($soluong_conlai);
-                    if($soluong_conlai == 0){
-                        return 'Sản phẩm tạm hết hàng';
-                    }
+                    $soluong_conlai = intval($result_soluong->fetch_assoc()['soluong']);  //Số lượng trong kho
+                    $capnhatsoluong = $soluong_conlai - $soluongmua;
 
-                    if($soluongmua > $soluong_conlai){
-                        return 'Vượt quá số lượng sản phẩm hiện tại';
-                    }else{
-                        $soluongmoi = $soluong_conlai - $soluongmua;
-                        $sql = "UPDATE sanpham SET 
-                            soluong = '".$soluongmoi."',
-                            WHERE id_sp = '".$id_sp."'
+                    if($capnhatsoluong < 0){
+                        return 'Số lượng SP trong kho hiện không đủ!';
+                    }
+                    else if($capnhatsoluong >= 0){
+                        $sql = "UPDATE sanpham
+                                SET soluong = '".$capnhatsoluong."'
+                                WHERE id_sp = '".$id_sp."'
                         ";
                         if (mysqli_query($conn, $sql)) {
                             return "success";
                         } else {
-                            return "non-success";
+                            return "Lỗi cập nhật số lượng sp trong kho";
                         }
                     }
                 }else{

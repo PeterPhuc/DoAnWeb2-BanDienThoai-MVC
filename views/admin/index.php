@@ -41,6 +41,9 @@
                         case 'bill-list-manage':
                             $param = 'bill-list-manage';
                             break;
+                        case 'view-bill-detail':
+                            $param = 'view-bill-detail';
+                            break;
                         default:
                             $param = 'user-manage';
                             break;

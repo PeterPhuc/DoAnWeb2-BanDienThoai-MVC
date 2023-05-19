@@ -109,17 +109,37 @@
             }
         }
         else if($action == 'add'){               //Thêm mới 1 sản phẩm
-            if(isset($_GET['id_dmsp']) && isset($_GET['tensp']) && isset($_GET['gia_sp']) && isset($_GET['gia_khuyenmai']) && isset($_GET['soluong'])&& isset($_GET['anh_sp'])&& isset($_GET['motasp'])&&isset($_GET['thongsokythuat'])){
+            if(isset($_GET['id_dmsp']) && isset($_GET['tensp']) && isset($_GET['gia_sp']) && isset($_GET['gia_khuyenmai']) && isset($_GET['soluong'])&& isset($_GET['motasp'])&&isset($_GET['thongsokythuat'])&&isset($_POST['typeAvatarProperty'])){
                 $id_dmsp = $_GET['id_dmsp'];
                 $tensp = $_GET['tensp'];
                 $gia_sp = $_GET['gia_sp'];
                 $gia_khuyenmai = $_GET['gia_khuyenmai'];
                 $soluong = $_GET['soluong'];
-                $anh_sp = $_GET['anh_sp'];
                 $motasp = $_GET['motasp'];
                 $thongsokythuat = $_GET['thongsokythuat'];
 
-                addSP($id_dmsp,$tensp,$gia_sp,$gia_khuyenmai,$soluong,$anh_sp,$motasp,$thongsokythuat);
+                $typeAvatarProperty = $_POST['typeAvatarProperty'];
+                if($typeAvatarProperty == 'string'){
+                    if(isset($_POST['avatar'])){
+                        $avatar = $_POST['avatar'];       //User ko set ảnh đại diện
+                        addSP($id_dmsp,$tensp,$gia_sp,$gia_khuyenmai,$soluong,$avatar,$motasp,$thongsokythuat);
+                    } 
+                }else{
+                    if(isset($_FILES['avatar'])){                //User set ảnh đại diện          
+                        $_FILES['avatar']['name'] = uniqid('pd_', true);
+                        $duoiFile = pathinfo($_FILES['avatar']['full_path'], PATHINFO_EXTENSION);   //Đuôi file
+                        $avatar = $_FILES['avatar']['name'] . '.' .$duoiFile;
+
+                        $thuMucDich = "../../assets/images/products/"; // Đường dẫn đến thư mục "products"
+                        $duongDanMoi = $thuMucDich . $avatar;
+                        if (move_uploaded_file($_FILES['avatar']['tmp_name'], $duongDanMoi)) {
+                            // echo "Tệp tin đã được tải lên và lưu thành công.";
+                            addSP($id_dmsp,$tensp,$gia_sp,$gia_khuyenmai,$soluong,$avatar,$motasp,$thongsokythuat);
+                        } else {
+                            echo "Can't save avatar";
+                        }
+                    } 
+                }
             }
         }
         else if($action == 'edit'){                   //Thêm mới 1 sản phẩm
@@ -148,4 +168,6 @@
             }
         }
     }
+
+    // echo "abc";
 ?>

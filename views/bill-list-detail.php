@@ -31,43 +31,13 @@
                     <table class="table">
                         <thead>
                             <tr>
-                                <th>Ảnh</th>
                                 <th>Tên sản phẩm</th>
                                 <th>Số lượng</th>
                                 <th>Thành tiền</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td class="img">
-                                    <div class="wrapper">
-                                        <img src="assets/images/products/iphone/iphone-11-trang.jpg" alt="">
-                                    </div>
-                                </td>
-                                <td>iphone 14 pro max</td>
-                                <td>100</td>
-                                <td>280.222.000đ</td>
-                            </tr>
-                            <tr>
-                                <td class="img">
-                                    <div class="wrapper">
-                                        <img src="assets/images/products/iphone/iphone-11-trang.jpg" alt="">
-                                    </div>
-                                </td>
-                                <td>iphone 14 pro max</td>
-                                <td>100</td>
-                                <td>280.222.000đ</td>
-                            </tr>
-                            <tr>
-                                <td class="img">
-                                    <div class="wrapper">
-                                        <img src="assets/images/products/iphone/iphone-11-trang.jpg" alt="">
-                                    </div>
-                                </td>
-                                <td>iphone 14 pro max</td>
-                                <td>100</td>
-                                <td>280.222.000đ</td>
-                            </tr>
+                            
                         </tbody>
                     </table>
                 </div>
@@ -77,5 +47,36 @@
         <!-- Phần footer -->
         <?php include("../views/shared/footer.php")?>
     </div>
+
+    <script>
+        const url = new URL(window.location.href);
+        const searchParams = url.searchParams;
+        const id_hd = searchParams.get('id_hd');
+        document.querySelector('h2').innerHTML = 'Mã hóa đơn: ' + id_hd;
+
+        $.ajax({
+            url: "controllers/bill/xuly-bill-detail.php",
+            method: "GET",
+            data: {
+                'action': 'xuatCTHDtheoIDHD',
+                'id_hd': id_hd
+            }
+        }).done(function(dataHD) {
+            if(dataHD != 'No result'){
+                const dataParser = JSON.parse(dataHD);
+                const tbody = document.querySelector('tbody');
+                let strData = dataParser.map(function(item, index){
+                    return `
+                        <tr>
+                            <td>${item['tensp']}</td>
+                            <td>${item['soluong']}</td>
+                            <td>${item['tongtien']}đ</td>
+                        </tr>
+                    `;
+                }).join('');
+                tbody.innerHTML = strData;
+            }
+        });
+    </script>
 </body>
 </html>

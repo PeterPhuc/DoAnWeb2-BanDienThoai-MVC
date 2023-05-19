@@ -16,7 +16,7 @@ function check(btn) {
                     'action': 'themCart',
                     'id_kh': id_kh,
                     'id_sp': chitietsp['id_sp'],
-                    'soluong': 1,
+                    'soluongmua': 1,
                     'tongtien': chitietsp['gia_khuyenmai'],
                     'tensp': chitietsp['tensp'],
                     'anh_sp': chitietsp['anh_sp']

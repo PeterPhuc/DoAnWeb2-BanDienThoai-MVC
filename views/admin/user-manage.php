@@ -5,7 +5,7 @@
     <h1 class="title">Quản lý khách hàng</h1>
     <div class="table-manage">
         <h4 class="total-record">
-            Bảng này có tổng <span>10<span> user
+            Bảng này có tổng <span>10</span> user
         </h4>
         <div class="add-record">
             <button type="button" class="btn btn-success" onclick="them(this)">Thêm</button>
@@ -71,80 +71,80 @@
         }
     </style>
         <div class="register-wrapper add-user">
-        <div class="register-container">
-            <div class="register-title">
-                <h1>TẠO MỚI USER</h1>
-            </div>
-            <div class="register-form">
-                <form action="" method="post">
-                    <!-- Tên tài khoản -->
-                    <div class="field field-accname">
-                        <input type="text" name="acname" id="" placeholder="Tên tài khoản">
-                    </div>
-                    <p class="alert alert--acname"></p>
-
-                    <!-- Họ tên khách hàng -->
-                    <div class="field field-username">
-                        <input type="text" name="uname" id="" placeholder="Họ tên">
-                    </div>
-                    <p class="alert alert--uname"></p>
-
-                    <!-- Số điện thoại -->
-                    <div class="field field-phone">
-                        <input type="text" name="phone" id="" placeholder="Số điện thoại">
-                    </div>
-                    <p class="alert alert--phone"></p>
-                    
-                    <!-- Email -->
-                    <div class="field field-mail">
-                        <input type="text" name="mail" id="" placeholder="Email">
-                    </div>
-                    <p class="alert alert--mail"></p>
-
-                    <!-- Địa chỉ -->
-                    <div class="field field-address">
-                        <input type="text" name="address" id="" placeholder="Địa chỉ">
-                    </div>
-                    <p class="alert alert--address"></p>
-
-                    <!-- Mật khẩu -->
-                    <div class="field field-pass">
-                        <input type="password" name="pass" id="" placeholder="Password">
-                        <span class="eye">
-                            <i class="fa-solid fa-eye"></i>
-                        </span>
-                    </div>
-                    <p class="alert alert--pass"></p>
-
-                    <!-- Ngày sinh -->
-                    <div class="field field-birth">
-                        <input type="date" name="birth" id="" placeholder="Ngày sinh">
-                    </div>
-                    <p class="alert alert--birth"></p>
-
-                    <!-- Ảnh đại diện -->
-                    <div class="field field-avatar"> 
-                        <span>Ảnh đại diện: </span>
-                        <label id="upload" for="avt">Upload photo</label>
-                        <label id="remove" for="" class="hidden">Remove photo</label>
-
-                        <input type="file" name="avt" id="avt" placeholder="Ảnh tài khoản" accept=".png,.jpg,.jpeg" style="display: none">
-
-                        <div class="wrap-avatar">
-                            <a href="assets/images/uploads/customer-avatar/default-acc.png" target="_blank">
-                                <img src="assets/images/uploads/customer-avatar/default-acc.png" alt="" class="account-avt">
-                            </a>
+            <div class="register-container">
+                <div class="register-title">
+                    <h1>TẠO MỚI USER</h1>
+                </div>
+                <div class="register-form">
+                    <form action="" method="post">
+                        <!-- Tên tài khoản -->
+                        <div class="field field-accname">
+                            <input type="text" name="acname" id="" placeholder="Tên tài khoản">
                         </div>
-                    </div>
-                    <p class="alert alert--avatar" style="padding-top: 5px !important;"></p> 
+                        <p class="alert alert--acname"></p>
 
-                    <!-- Submit form -->
-                    <button type="submit" class="btn">
-                        <div class="name-btn">Sign Up</div>
-                    </button>
-                </form>
+                        <!-- Họ tên khách hàng -->
+                        <div class="field field-username">
+                            <input type="text" name="uname" id="" placeholder="Họ tên">
+                        </div>
+                        <p class="alert alert--uname"></p>
+
+                        <!-- Số điện thoại -->
+                        <div class="field field-phone">
+                            <input type="text" name="phone" id="" placeholder="Số điện thoại">
+                        </div>
+                        <p class="alert alert--phone"></p>
+                        
+                        <!-- Email -->
+                        <div class="field field-mail">
+                            <input type="text" name="mail" id="" placeholder="Email">
+                        </div>
+                        <p class="alert alert--mail"></p>
+
+                        <!-- Địa chỉ -->
+                        <div class="field field-address">
+                            <input type="text" name="address" id="" placeholder="Địa chỉ">
+                        </div>
+                        <p class="alert alert--address"></p>
+
+                        <!-- Mật khẩu -->
+                        <div class="field field-pass">
+                            <input type="password" name="pass" id="" placeholder="Password">
+                            <span class="eye">
+                                <i class="fa-solid fa-eye"></i>
+                            </span>
+                        </div>
+                        <p class="alert alert--pass"></p>
+
+                        <!-- Ngày sinh -->
+                        <div class="field field-birth">
+                            <input type="date" name="birth" id="" placeholder="Ngày sinh">
+                        </div>
+                        <p class="alert alert--birth"></p>
+
+                        <!-- Ảnh đại diện -->
+                        <div class="field field-avatar"> 
+                            <span>Ảnh đại diện: </span>
+                            <label id="upload" for="avt">Upload photo</label>
+                            <label id="remove" for="" class="hidden">Remove photo</label>
+
+                            <input type="file" name="avt" id="avt" placeholder="Ảnh tài khoản" accept=".png,.jpg,.jpeg" style="display: none">
+
+                            <div class="wrap-avatar">
+                                <a href="assets/images/uploads/customer-avatar/default-acc.png" target="_blank">
+                                    <img src="assets/images/uploads/customer-avatar/default-acc.png" alt="" class="account-avt">
+                                </a>
+                            </div>
+                        </div>
+                        <p class="alert alert--avatar" style="padding-top: 5px !important;"></p> 
+
+                        <!-- Submit form -->
+                        <button type="submit" class="btn">
+                            <div class="name-btn">Sign Up</div>
+                        </button>
+                    </form>
+                </div>
             </div>
-        </div>
         </div>
 </div>
 <script>
@@ -161,7 +161,9 @@
         }).done(function(data) {
             if(data != 'fail'){
                 let dataParser = JSON.parse(data);
-                console.log(dataParser);
+                let total_user = dataParser.length;
+
+                document.querySelector('.table-manage h4.total-record span').innerText = total_user;
                 let stringHTML = dataParser.map(function(item, index){
                     return `<tr>
                                 <td class="id_kh">${item['id_kh']}</td>

@@ -41,33 +41,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>100000001</td>
-                                <td>30-04-2023</td>
-                                <td>109.990.000</td>
-                                <td>Đã giao</td>
-                                <td>
-                                    <a href="views/bill-list-detail.php">Xem</a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>100000001</td>
-                                <td>30-04-2023</td>
-                                <td>109.990.000</td>
-                                <td>Đã giao</td>
-                                <td>
-                                    <a href="views/bill-list-detail.php">Xem</a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>100000001</td>
-                                <td>30-04-2023</td>
-                                <td>109.990.000</td>
-                                <td>Đã giao</td>
-                                <td>
-                                    <a href="views/bill-list-detail.php">Xem</a>
-                                </td>
-                            </tr>
+                            
                         </tbody>
                     </table>
                 </div>
@@ -78,5 +52,46 @@
         <!-- Phần footer -->
         <?php include("../views/shared/footer.php")?>
     </div>
+
+    <script>
+        //Lấy thông tin id phiên kh
+        $.ajax({
+            url: "controllers/account/check-session-login-customer.php",
+            method: "GET"
+        }).done(function(data) {
+            if(data !== 'timeout'){
+                const id_kh = data.split(':')[0];
+                //Lấy thông tin hóa đơn theo mã KH vừa nhận được
+                $.ajax({
+                    url: "controllers/bill/xuly-bill-list.php",
+                    method: "GET",
+                    data: {'action': 'xuatHDtheoIDKH',
+                    'id_kh': id_kh}
+                }).done(function(dataHD) {
+                    if(dataHD != 'No result'){
+                        const dataParser = JSON.parse(dataHD);
+                        
+                        const tbody = document.querySelector('tbody');
+                        let strData = dataParser.map(function(item, index){
+                            return `
+                                <tr>
+                                    <td>${item['id_hd']}</td>
+                                    <td>${item['id_hd']}</td>
+                                    <td>${item['id_hd']}</td>
+                                    <td>
+                                        Đã giao
+                                    </td>
+                                    <td>
+                                        <a href="views/bill-list-detail.php?id_hd=${item['id_hd']}">Xem</a>
+                                    </td>
+                                </tr>
+                            `;
+                        }).join('');
+                        tbody.innerHTML = strData;
+                    }
+                });
+            }
+        });
+    </script>
 </body>
 </html>

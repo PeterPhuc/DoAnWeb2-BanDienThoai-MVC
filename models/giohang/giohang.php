@@ -3,9 +3,9 @@
     include($_SERVER['DOCUMENT_ROOT'] . '/DoAnWeb2-BanDienThoai-MVC/config/connect.php');
     if(!$conn->connect_error){    //kết nối thành công
         class Cart {
-            function themCart($id_kh,$id_sp,$soluong=1,$tongtien,$tensp,$anh_sp) {
+            function themCart($id_kh,$id_sp,$soluongmua=1,$tongtien,$tensp,$anh_sp) {
                 global $conn;
-                $sql = "INSERT INTO giohang(id_kh, id_sp, soluong, tongtien, tensp, anh_sp) VALUES ('".$id_kh."','".$id_sp."','".$soluong."','".$tongtien."','".$tensp."','".$anh_sp."')";
+                $sql = "INSERT INTO giohang(id_kh, id_sp, soluong, tongtien, tensp, anh_sp) VALUES ('".$id_kh."','".$id_sp."','".$soluongmua."','".$tongtien."','".$tensp."','".$anh_sp."')";
 
                 if (mysqli_query($conn, $sql)) {
                     return "success";
@@ -13,11 +13,11 @@
                     return "non-success";
                 }
             }
-            function capnhatCart($id_kh,$id_sp,$soluong,$tongtien) {
+            function capnhatCart($id_kh,$id_sp,$soluongmua,$tongtien) {
                 global $conn;
                 $sql = "UPDATE giohang SET 
-                        soluong = '".$soluong."',
-                        tongtien = '".$tongtien."',
+                        soluong = '".$soluongmua."',
+                        tongtien = '".$tongtien."'
                         WHERE id_kh = '".$id_kh."' AND id_sp = '".$id_sp."'
                 ";
 

@@ -124,7 +124,7 @@
             }
         }
 
-        function xoaToanBoSP(btn) {
+        function xoaToanBoSP(btn) {        //Xóa toàn bộ giỏ hàng
             const id_kh = btn.getAttribute('data-idKH');
             var result = confirm("Bạn muốn xóa toàn bộ giỏ hàng?");
             if (result === true) {
@@ -137,8 +137,9 @@
                     }
                 }).done(function(dataResponse) {
                     if(dataResponse === 'success'){
-                        alert('Xóa thành công!');
                         document.querySelector('.cart-exist .table tbody').innerHTML = '';
+                        alert('Xóa thành công!');
+                        location.reload();
                     }else{
                         alert('Xóa không thành công. Vui lòng thử lại!');
                     }
@@ -146,23 +147,45 @@
             }
         }
 
+        var timeoutID = '';
         function capNhatSoluong(input) {
-            let current_value = +input.value;
+            let soluongmua = +input.value;
             let total_price_td = input.parentElement.parentElement.nextElementSibling;
-            let current_price = +total_price_td.getAttribute('data-price');
+
+            let gia_ban_dau = +total_price_td.getAttribute('data-price');
             
-            let total_price = current_value * current_price;
-            let format_toString = total_price.toLocaleString().replace(/\,/g, '.');
+            let tongtien = soluongmua * gia_ban_dau;
+            let format_tongtien_toString = tongtien.toLocaleString().replace(/\,/g, '.');
             
-            total_price_td.innerHTML = format_toString + 'đ';
+            total_price_td.innerHTML = format_tongtien_toString + 'đ';
 
             //Tự động cập nhật số lượng giỏ hàng lên server sau khi user click tăng giảm số lượng khoảng 3s
-            var clearTimeout = '';
-            setTimeout(() => {
-                
-            }, 3000);
+            if(typeof timeoutID === 'number'){
+                clearTimeout(timeoutID);
+            }
+            timeoutID = setTimeout(() => {
+                const id_kh = input.getAttribute('data-idKH');
+                const id_sp = input.getAttribute('data-idSP');
+                $.ajax({
+                    url: "controllers/giohang/xuly-giohang.php",
+                    method: "GET",
+                    data: {
+                        'action': 'updateCart',
+                        'id_kh': id_kh,
+                        'id_sp': id_sp,
+                        'soluongmua': soluongmua,
+                        'tongtien': format_tongtien_toString
+                    }
+                }).done(function(dataResponse) {
+                    if(dataResponse === 'success'){
+                        alert('Cập nhật giỏ hàng thành công!');
+                    }else{
+                        alert(dataResponse);
+                    }
+                });
+            }, 2000);
         }
-
+            
         function tang(btn) {
             const input = btn.parentElement.querySelector('input#soluong');
             let current_value = +input.value;
@@ -181,6 +204,7 @@
 
         function render(dataParser){
             let strData = dataParser.map(function(item, index){
+                const gia_ban_dau = +(item['tongtien'].replace(/\./g, ''))/item['soluong'];
                 return `
                     <tr>
                         <td class="img">
@@ -192,11 +216,11 @@
                         <td>
                             <div class="edit-soluong">
                                 <button class="giam" onclick="giam(this)">-</button>
-                                <input type="number" name="" id="soluong" value=${item['soluong']} onchange="capNhatSoluong(this)">
+                                <input type="number" name="" id="soluong" value=${item['soluong']} onchange="capNhatSoluong(this)" data-idSP=${item['id_sp']} data-idKH=${item['id_kh']}>
                                 <button class="tang" onclick="tang(this)">+</button>
                             </div>
                         </td>
-                        <td data-price=${item['tongtien'].replace(/\./g, '')}>${item['tongtien']}đ</td>
+                        <td data-price=${gia_ban_dau}>${item['tongtien']}đ</td>
                         <td class="ctrl" style="width: min-content">
                             <div class="btn">
                                 <button type="button" class="btn btn-danger delete-item" data-idSP=${item['id_sp']} data-idKH=${item['id_kh']} onclick="xoaMotSP(this)">
